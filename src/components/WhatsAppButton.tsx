@@ -38,7 +38,7 @@ export default function WhatsAppButton() {
   const waUrl = 'https://wa.me/5492216049987?text=Hola%20Quento%20Club!%20Quiero%20hacer%20una%20consulta%20general.';
 
   return (
-    <div className="fixed bottom-6 right-6 z-40 flex flex-col items-end">
+    <div className="fixed bottom-22 md:bottom-6 right-4 md:right-6 z-30 flex flex-col items-end">
       
       {/* Tooltip speech bubble */}
       <AnimatePresence>

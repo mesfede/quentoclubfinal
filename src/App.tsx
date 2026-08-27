@@ -4,9 +4,7 @@ import Hero from './components/Hero';
 import BookingSystem from './components/BookingSystem';
 import ElClub from './components/ElClub';
 import Actividades from './components/Actividades';
-import Ubicacion from './components/Ubicacion';
 import Footer from './components/Footer';
-import WhatsAppButton from './components/WhatsAppButton';
 import MobileStickyBar from './components/MobileStickyBar';
 
 export default function App() {
@@ -51,19 +49,13 @@ export default function App() {
       {/* 5. Torneos y Clases (activities & tournaments) */}
       <Actividades />
 
-      {/* 6. Geolocation, Schedule and Contact Center */}
-      <Ubicacion />
-
-      {/* 7. Structured Footer & Final CTA */}
+      {/* 6. Structured Footer with integrated Location, Map & Contact */}
       <Footer
         onNavigateToBooking={handleNavigateToBooking}
         onNavigateToSection={navigateToSection}
       />
 
-      {/* 8. Non-obtrusive WhatsApp Button */}
-      <WhatsAppButton />
-
-      {/* 9. Smartphone Sticky Quick CTA Bar */}
+      {/* 7. Smartphone Sticky Quick CTA Bar */}
       <MobileStickyBar onNavigateToBooking={handleNavigateToBooking} />
     </div>
   );

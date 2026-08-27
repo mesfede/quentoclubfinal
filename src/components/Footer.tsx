@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { MapPin, Phone, Mail, MessageSquare, ExternalLink, Instagram } from 'lucide-react';
+import { MapPin, Phone, Mail, MessageSquare, ExternalLink, Instagram, Navigation, Clock, Compass } from 'lucide-react';
 import { images } from '../assets';
 
 interface FooterProps {
@@ -9,11 +9,93 @@ interface FooterProps {
 
 export default function Footer({ onNavigateToBooking, onNavigateToSection }: FooterProps) {
   const [logoFailed, setLogoFailed] = useState(false);
+  const mapQueryUrl = 'https://www.google.com/maps/place/Quento+Club+Padel/@-34.8565576,-58.0750761,17z/data=!3m1!4b1!4m6!3m5!1s0x95a2e6396e94a8f9:0xe96d91f24d7768a8!8m2!3d-34.856562!4d-58.0725012!16s%2Fg%2F11p6700f1h?entry=ttu';
+  const iframeSrc = 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3278.487823547844!2d-58.0776510234125!3d-34.856557570417015!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95a2e6396e94a8f9%3A0xe96d91f24d7768a8!2sQuento%20Club%20Padel!5e0!3m2!1ses-419!2sar!4v1710000000000';
 
   return (
-    <footer className="bg-[#b8a791] text-neutral-900 pt-16 pb-12 transition-colors">
+    <footer id="contacto" className="bg-[#b8a791] text-neutral-900 pt-16 pb-12 transition-colors scroll-mt-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
+        {/* Integrated Ubicación & Cómo Llegar Compact Block */}
+        <div className="bg-neutral-950 text-white rounded-3xl p-6 sm:p-8 md:p-10 mb-14 shadow-2xl border border-neutral-800">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+            
+            {/* Info Column (5 cols) */}
+            <div className="lg:col-span-5 space-y-6">
+              <div>
+                <span className="text-xs sm:text-sm font-black uppercase tracking-widest text-[#d21a23]">UBICACIÓN</span>
+                <h3 className="text-3xl sm:text-4xl md:text-5xl font-display font-black text-white uppercase tracking-tight mt-1">
+                  ¿CÓMO LLEGAR?
+                </h3>
+              </div>
+
+              <div className="space-y-4 text-xs sm:text-sm">
+                <div className="flex items-start space-x-3">
+                  <MapPin className="w-5 h-5 text-[#d21a23] shrink-0 mt-0.5" />
+                  <div>
+                    <p className="font-extrabold text-white">Camino Centenario N° 8907</p>
+                    <p className="text-neutral-400 text-xs">Frente al Parque Ecológico • Villa Elisa, La Plata</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start space-x-3">
+                  <Clock className="w-5 h-5 text-[#d21a23] shrink-0 mt-0.5" />
+                  <div>
+                    <p className="font-extrabold text-white">Todos los días: 08:00 a 00:00 hs</p>
+                    <p className="text-neutral-400 text-xs">Fines de semana y feriados inclusive</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start space-x-3">
+                  <Compass className="w-5 h-5 text-[#d21a23] shrink-0 mt-0.5" />
+                  <div>
+                    <p className="text-neutral-300 text-xs font-medium leading-relaxed">
+                      Fácil acceso desde City Bell y Autopista. Portón de ingreso seguro y amplio estacionamiento privado gratuito.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="pt-2 flex flex-wrap gap-3">
+                <a
+                  href={mapQueryUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center px-4 py-2.5 rounded-xl bg-[#d21a23] hover:bg-red-700 text-white font-extrabold text-xs uppercase tracking-wider transition-all shadow-md"
+                >
+                  <Navigation className="w-3.5 h-3.5 mr-1.5" />
+                  Abrir en Google Maps (GPS)
+                </a>
+                <a
+                  href="https://wa.me/5492216049987"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center px-4 py-2.5 rounded-xl bg-neutral-900 hover:bg-neutral-800 text-neutral-200 border border-neutral-700 font-extrabold text-xs uppercase tracking-wider transition-all"
+                >
+                  <Phone className="w-3.5 h-3.5 mr-1.5 text-[#d21a23]" />
+                  (221) 604-9987
+                </a>
+              </div>
+            </div>
+
+            {/* Compact Interactive Map (7 cols) */}
+            <div className="lg:col-span-7 h-64 sm:h-80 rounded-2xl overflow-hidden border border-neutral-800 shadow-inner relative">
+              <iframe
+                title="Quento Club Map"
+                src={iframeSrc}
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen={true}
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                className="w-full h-full"
+              />
+            </div>
+
+          </div>
+        </div>
+
         {/* 3 Columns Master Grid */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-10 lg:gap-14 pb-14">
           
@@ -68,7 +150,7 @@ export default function Footer({ onNavigateToBooking, onNavigateToSection }: Foo
             <div className="space-y-4 text-xs sm:text-[13px] font-bold text-neutral-900">
               <div className="flex items-center space-x-3">
                 <MapPin className="w-4 h-4 text-[#d21a23] shrink-0" />
-                <span>La Plata, Buenos Aires, Argentina</span>
+                <span>Camino Centenario 8907, Villa Elisa</span>
               </div>
 
               <a 

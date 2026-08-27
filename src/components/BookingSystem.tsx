@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Calendar as CalendarIcon, MapPin, Clock, Check, ArrowLeft, Ticket, CalendarCheck, AlertCircle, Trash2, X } from 'lucide-react';
 import { courts } from '../data/mockData';
 import { Court, Booking } from '../types';
-import { images } from '../assets';
+import fondoReservas from '../assets/images/fondo_reservas.jpg';
 
 export default function BookingSystem() {
   // States
@@ -30,14 +30,14 @@ export default function BookingSystem() {
   // Active bookings list
   const [myBookings, setMyBookings] = useState<Booking[]>([]);
 
-  // Generate 7 days starting today
-  const [sevenDays, setSevenDays] = useState<{ dayName: string; dayNum: string; dateStr: string; fullLabel: string }[]>([]);
+  // Generate 8 days starting today (first 5 shown on mobile, all 8 on desktop)
+  const [calendarDays, setCalendarDays] = useState<{ dayName: string; dayNum: string; dateStr: string; fullLabel: string }[]>([]);
 
   useEffect(() => {
     const dates = [];
     const daysEs = ['DOM', 'LUN', 'MAR', 'MIÉ', 'JUE', 'VIE', 'SÁB'];
     
-    for (let i = 0; i < 7; i++) {
+    for (let i = 0; i < 8; i++) {
       const d = new Date();
       d.setDate(d.getDate() + i);
       const dayName = daysEs[d.getDay()];
@@ -52,14 +52,12 @@ export default function BookingSystem() {
       dates.push({ dayName, dayNum, dateStr, fullLabel });
     }
     
-    setSevenDays(dates);
+    setCalendarDays(dates);
     // Select first day by default
     setSelectedDateStr(dates[0].dateStr);
     setSelectedDateLabel(dates[0].fullLabel);
-    // Select first court by default (Pista 2 or Pista 1)
-    if (courts && courts.length > 0) {
-      setSelectedCourt(courts[1] || courts[0]);
-    }
+    // Do NOT select court by default so user picks one
+    setSelectedCourt(null);
 
     // Load existing bookings from local storage
     const saved = localStorage.getItem('quento_bookings');
@@ -140,19 +138,26 @@ export default function BookingSystem() {
 
   const handleFormSubmit = (e: FormEvent) => {
     e.preventDefault();
-    if (!userName.trim() || !userEmail.trim() || !userPhone.trim()) {
-      setErrorMsg('Por favor completá todos los campos.');
-      return;
-    }
-    if (!userEmail.includes('@')) {
-      setErrorMsg('Ingresá un email válido.');
+    if (!userName.trim() || !userPhone.trim()) {
+      setErrorMsg('Por favor completá tu nombre y teléfono.');
       return;
     }
     setErrorMsg('');
     setIsSubmitting(true);
 
+    if (!selectedCourt) return;
+
+    // Generate WhatsApp direct confirmation link
+    const whatsappMsg = `¡Hola Quento Club! Quiero confirmar mi reserva de cancha:
+🎾 Cancha: ${selectedCourt.name} (Techada)
+📅 Día: ${selectedDateLabel}
+⏰ Horario: ${selectedTime} hs
+👤 Nombre: ${userName.trim()}
+📱 Teléfono: ${userPhone.trim()}`;
+
+    const whatsappUrl = `https://wa.me/5492216049987?text=${encodeURIComponent(whatsappMsg)}`;
+
     setTimeout(() => {
-      if (!selectedCourt) return;
       const newBooking: Booking = {
         id: 'BK-' + Math.random().toString(36).substr(2, 9).toUpperCase(),
         courtId: selectedCourt.id,
@@ -160,9 +165,9 @@ export default function BookingSystem() {
         date: selectedDateStr,
         dateFormatted: selectedDateLabel,
         timeSlot: selectedTime,
-        userName,
-        userEmail,
-        userPhone,
+        userName: userName.trim(),
+        userEmail: '',
+        userPhone: userPhone.trim(),
         totalPrice: selectedCourt.priceHour,
         status: 'confirmed',
         createdAt: new Date().toISOString()
@@ -175,7 +180,14 @@ export default function BookingSystem() {
       setBookingResult(newBooking);
       setIsSubmitting(false);
       setCheckoutStep('success');
-    }, 900);
+
+      // Open WhatsApp automatically
+      try {
+        window.open(whatsappUrl, '_blank');
+      } catch (err) {
+        console.error('Could not auto-open WhatsApp:', err);
+      }
+    }, 600);
   };
 
   const handleCancelBooking = (bookingId: string) => {
@@ -211,23 +223,19 @@ export default function BookingSystem() {
   };
 
   return (
-    <section id="reservas" className="relative py-20 sm:py-28 text-white scroll-mt-20 overflow-hidden">
-      
-      {/* Background Image: Close-up padel blue turf with yellow ball and motion diagonal lines */}
-      <div className="absolute inset-0 -z-10 overflow-hidden pointer-events-none">
-        <img 
-          src={images.fondoReservas} 
-          alt="Canchas de Pádel Quento" 
-          className="w-full h-full object-cover object-center scale-105 filter brightness-95"
-        />
-        
-        {/* Soft Diagonal Lighting & Tint Overlay for matching the reference image */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-black/40" />
-        <div className="absolute inset-0 bg-slate-950/30 backdrop-blur-[1px]" />
-        
-        {/* Ambient Warm Glow */}
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-red-600/10 rounded-full blur-[160px]" />
-      </div>
+    <section 
+      id="reservas" 
+      className="relative py-20 sm:py-28 text-white scroll-mt-20 overflow-hidden bg-neutral-950"
+    >
+      {/* Background photo with enhanced visibility */}
+      <div 
+        className="absolute inset-0 pointer-events-none opacity-60 bg-center bg-cover bg-no-repeat"
+        style={{
+          backgroundImage: `url(${fondoReservas})`,
+        }}
+      />
+      {/* Soft gradient transitions */}
+      <div className="absolute inset-0 bg-gradient-to-b from-neutral-950/65 via-neutral-950/20 to-neutral-950/75 pointer-events-none" />
 
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         
@@ -237,50 +245,32 @@ export default function BookingSystem() {
             <span className="text-white drop-shadow-[0_4px_8px_rgba(0,0,0,0.8)]">RESERVÁ TU </span>
             <span className="text-[#d21a23] drop-shadow-[0_4px_12px_rgba(210,26,35,0.4)]">CANCHA</span>
           </h2>
-          <p className="mt-3.5 text-sm sm:text-base md:text-lg text-neutral-200 font-bold drop-shadow">
-            Elegí el día, seleccioná tu cancha techada y reservá tu horario al instante.
+          <p className="mt-3.5 text-sm sm:text-base md:text-lg text-neutral-100 font-bold drop-shadow">
+            Elegí el día, seleccioná tu cancha y reservá tu horario al instante.
           </p>
-          
-          {/* Mis turnos pill if exists */}
-          {myBookings.length > 0 && (
-            <div className="mt-4">
-              <button
-                onClick={() => setShowMyBookings(true)}
-                className="inline-flex items-center text-xs font-black uppercase tracking-wider text-white hover:text-red-300 transition-colors bg-black/60 px-4 py-2 rounded-full border border-white/20 backdrop-blur-md cursor-pointer"
-              >
-                <CalendarCheck className="w-4 h-4 mr-1.5 text-[#d21a23]" />
-                Ver mis reservas ({myBookings.length})
-              </button>
-            </div>
-          )}
         </div>
 
         {/* Stack of Glass Cards */}
         <div className="space-y-6 sm:space-y-8">
           
           {/* 1. ELEGÍ EL DÍA (Glass Card) */}
-          <div className="w-full bg-[#334155]/40 backdrop-blur-xl p-5 sm:p-7 md:p-8 rounded-3xl border border-white/20 shadow-2xl">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-              <div className="flex items-center space-x-2.5">
-                <CalendarIcon className="w-5 h-5 sm:w-6 sm:h-6 text-[#d21a23]" />
-                <h3 className="text-base sm:text-lg md:text-xl font-display font-black italic uppercase tracking-wider text-white">
+          <div className="w-full bg-neutral-950/40 backdrop-blur-md p-4 sm:p-6 md:p-7 rounded-3xl border border-white/20 shadow-2xl">
+            <div className="flex items-center justify-between gap-2 mb-4 sm:mb-5">
+              <div className="flex items-center space-x-1.5 sm:space-x-2 min-w-0">
+                <CalendarIcon className="w-4 h-4 sm:w-5 sm:h-5 text-[#d21a23] shrink-0" />
+                <h3 className="text-xs sm:text-base md:text-lg font-display font-black italic uppercase tracking-wider text-white whitespace-nowrap">
                   1. ELEGÍ EL DÍA
                 </h3>
               </div>
 
-              {/* Top Right Badges / Calendar Modal Trigger */}
-              <div className="flex items-center space-x-2.5">
-                <div className="px-4 py-1.5 rounded-full bg-white text-neutral-950 font-black text-xs uppercase tracking-wider shadow-sm">
-                  {selectedDateLabel ? selectedDateLabel.toUpperCase() : 'HOY'}
-                </div>
-                <button
-                  onClick={() => setShowFullCalendar(!showFullCalendar)}
-                  className="inline-flex items-center text-xs font-black uppercase tracking-wider text-white hover:bg-[#d21a23] transition-all bg-neutral-950 px-4 py-1.5 rounded-full border border-white/10 shadow-sm cursor-pointer"
-                >
-                  <CalendarIcon className="w-3.5 h-3.5 mr-1.5 text-[#d21a23]" />
-                  <span>{showFullCalendar ? 'Cerrar' : 'VER CALENDARIO'}</span>
-                </button>
-              </div>
+              {/* Single-line Ver Calendario trigger */}
+              <button
+                onClick={() => setShowFullCalendar(!showFullCalendar)}
+                className="inline-flex items-center text-[10px] sm:text-xs font-black uppercase tracking-wider text-white hover:bg-[#d21a23] transition-all bg-neutral-950 px-3 py-1.5 rounded-full border border-white/15 shadow-sm cursor-pointer whitespace-nowrap shrink-0"
+              >
+                <CalendarIcon className="w-3 h-3 mr-1 text-[#d21a23]" />
+                <span>{showFullCalendar ? 'Cerrar' : 'VER CALENDARIO'}</span>
+              </button>
             </div>
 
             {/* Full Interactive Calendar Modal Overlay */}
@@ -290,10 +280,10 @@ export default function BookingSystem() {
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: 'auto' }}
                   exit={{ opacity: 0, height: 0 }}
-                  className="overflow-hidden bg-neutral-950/95 border border-white/20 rounded-2xl p-5 mb-6 shadow-2xl"
+                  className="overflow-hidden bg-neutral-950/95 border border-white/20 rounded-2xl p-4 sm:p-5 mb-5 shadow-2xl"
                 >
-                  <div className="flex justify-between items-center mb-4 border-b border-neutral-800 pb-2">
-                    <span className="text-xs font-black uppercase text-neutral-400">
+                  <div className="flex justify-between items-center mb-3 border-b border-neutral-800 pb-2">
+                    <span className="text-[11px] sm:text-xs font-black uppercase text-neutral-400">
                       Seleccioná cualquier día del mes
                     </span>
                     <button
@@ -305,18 +295,18 @@ export default function BookingSystem() {
                   </div>
 
                   {/* Month header */}
-                  <div className="text-center font-bold text-sm text-white mb-3 uppercase tracking-wide">
+                  <div className="text-center font-bold text-xs sm:text-sm text-white mb-2.5 uppercase tracking-wide">
                     {new Date().toLocaleString('es-AR', { month: 'long', year: 'numeric' })}
                   </div>
 
                   {/* Calendar grid */}
-                  <div className="grid grid-cols-7 gap-1 text-center text-xs font-bold mb-2">
+                  <div className="grid grid-cols-7 gap-1 text-center text-[10px] sm:text-xs font-bold mb-1.5">
                     {['D', 'L', 'M', 'M', 'J', 'V', 'S'].map(d => (
                       <div key={d} className="py-1 text-neutral-400">{d}</div>
                     ))}
                   </div>
 
-                  <div className="grid grid-cols-7 gap-1.5">
+                  <div className="grid grid-cols-7 gap-1 sm:gap-1.5">
                     {generateMonthGrid().map((day, idx) => {
                       if (!day) return <div key={`empty-${idx}`} />;
                       
@@ -328,7 +318,7 @@ export default function BookingSystem() {
                           key={`day-${idx}`}
                           disabled={isPast}
                           onClick={() => handleFullCalendarSelect(day)}
-                          className={`py-2.5 rounded-lg text-center font-bold text-xs transition-all ${
+                          className={`py-2 rounded-lg text-center font-bold text-xs transition-all ${
                             isPast 
                               ? 'text-neutral-700 cursor-not-allowed'
                               : isSelected
@@ -345,24 +335,25 @@ export default function BookingSystem() {
               )}
             </AnimatePresence>
 
-            {/* 7 Days Grid */}
-            <div className="grid grid-cols-4 sm:grid-cols-7 gap-2.5 sm:gap-3.5">
-              {sevenDays.map((item) => {
+            {/* Days Grid: 5 days on Mobile, 8 days on Desktop */}
+            <div className="grid grid-cols-5 md:grid-cols-8 gap-1.5 sm:gap-2.5 lg:gap-3 max-w-5xl mx-auto">
+              {calendarDays.map((item, index) => {
                 const isSelected = selectedDateStr === item.dateStr;
+                const isExtraForDesktop = index >= 5;
                 return (
                   <button
                     key={item.dateStr}
                     onClick={() => handleDateSelect(item.dateStr, item.fullLabel)}
-                    className={`flex flex-col items-center justify-center py-4 px-2 rounded-2xl border text-center transition-all cursor-pointer min-h-[92px] ${
+                    className={`${isExtraForDesktop ? 'hidden md:flex' : 'flex'} flex-col items-center justify-center py-2.5 sm:py-3.5 lg:py-4 px-1 sm:px-2 rounded-2xl border text-center transition-all cursor-pointer min-h-[66px] sm:min-h-[84px] lg:min-h-[92px] ${
                       isSelected
                         ? 'bg-[#d21a23] text-white border-red-400/60 shadow-xl shadow-red-950/70 scale-[1.04]'
-                        : 'bg-[#cbd5e1]/90 hover:bg-white border-white/40 text-neutral-900 shadow-sm'
+                        : 'bg-[#cbd5e1]/90 hover:bg-white border-white/40 text-neutral-900 shadow-sm hover:scale-[1.02]'
                     }`}
                   >
-                    <span className={`text-[11px] sm:text-xs uppercase font-black tracking-wider ${isSelected ? 'text-red-100' : 'text-neutral-700'}`}>
+                    <span className={`text-[10px] sm:text-xs uppercase font-black tracking-wide leading-none ${isSelected ? 'text-red-100' : 'text-neutral-700'}`}>
                       {item.dayName}
                     </span>
-                    <span className={`text-2xl sm:text-3xl lg:text-4xl font-display font-black mt-1 leading-none ${isSelected ? 'text-white' : 'text-neutral-950'}`}>
+                    <span className={`text-lg sm:text-2xl lg:text-3xl font-display font-black mt-1 leading-none ${isSelected ? 'text-white' : 'text-neutral-950'}`}>
                       {item.dayNum}
                     </span>
                   </button>
@@ -371,29 +362,29 @@ export default function BookingSystem() {
             </div>
           </div>
 
-          {/* 2. ELEGÍ LA CANCHA (100% CUBIERTAS) (Glass Card) */}
-          <div className="w-full bg-[#334155]/40 backdrop-blur-xl p-5 sm:p-7 md:p-8 rounded-3xl border border-white/20 shadow-2xl">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-              <div className="flex items-center space-x-2.5">
-                <MapPin className="w-5 h-5 sm:w-6 sm:h-6 text-[#d21a23]" />
-                <h3 className="text-base sm:text-lg md:text-xl font-display font-black italic uppercase tracking-wider text-white">
-                  2. ELEGÍ LA CANCHA (100% CUBIERTAS)
+          {/* 2. ELEGÍ LA CANCHA (Glass Card - 2 Rows on Mobile: 1,2,3 & 4,5,6 / 1 Row of 6 on Desktop) */}
+          <div className="w-full bg-neutral-950/40 backdrop-blur-md p-4 sm:p-6 md:p-7 rounded-3xl border border-white/20 shadow-2xl">
+            <div className="flex items-center justify-between gap-2 mb-5">
+              <div className="flex items-center space-x-1.5 sm:space-x-2 min-w-0">
+                <MapPin className="w-4 h-4 sm:w-5 sm:h-5 text-[#d21a23] shrink-0" />
+                <h3 className="text-xs sm:text-base md:text-lg font-display font-black italic uppercase tracking-wider text-white whitespace-nowrap">
+                  2. ELEGÍ LA CANCHA
                 </h3>
               </div>
 
-              {/* Status Pill Badge */}
-              <div className="flex items-center space-x-3 px-4 py-1.5 rounded-full bg-white/95 text-neutral-950 text-[11px] font-black uppercase shadow-sm">
-                <span className="flex items-center font-extrabold text-neutral-900">
-                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 mr-1.5 animate-pulse" />
-                  CON TURNOS LIBRES
+              {/* Status Pill Badge - Hidden on mobile as requested */}
+              <div className="hidden sm:flex items-center space-x-1.5 sm:space-x-2 px-2.5 sm:px-3 py-1 rounded-full bg-white/95 text-neutral-950 text-[9px] sm:text-[10px] font-black uppercase shadow-sm whitespace-nowrap shrink-0">
+                <span className="flex items-center text-neutral-900">
+                  <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-emerald-500 mr-1 animate-pulse" />
+                  LIBRES
                 </span>
                 <span className="text-neutral-300 font-light">|</span>
                 <span className="text-neutral-500 font-bold">COMPLETA</span>
               </div>
             </div>
 
-            {/* 6 Clean Court Cards Grid */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5 sm:gap-4">
+            {/* 6 Courts: 2 rows of 3 on Mobile, 1 row of 6 on Desktop with larger numbers */}
+            <div className="grid grid-cols-3 md:grid-cols-6 gap-3 sm:gap-4 lg:gap-5 max-w-xl md:max-w-5xl mx-auto justify-items-center">
               {courts.map((court, idx) => {
                 const isSelected = selectedCourt?.id === court.id;
                 const courtNum = idx + 1;
@@ -406,34 +397,29 @@ export default function BookingSystem() {
                       setSelectedCourt(court);
                       setSelectedTime('');
                     }}
-                    className={`flex flex-col items-center justify-center p-4 sm:p-5 rounded-2xl border text-center transition-all cursor-pointer ${
+                    className={`w-full max-w-[130px] sm:max-w-[145px] md:max-w-[155px] lg:max-w-[170px] aspect-square rounded-full flex flex-col items-center justify-center p-2 sm:p-2.5 md:p-3 border text-center transition-all cursor-pointer shadow-xl relative ${
                       isSelected
-                        ? 'bg-neutral-950 border-2 border-red-500 shadow-2xl shadow-red-950/60 scale-[1.04]'
-                        : 'bg-[#cbd5e1]/85 hover:bg-white border-white/40 shadow-sm'
+                        ? 'bg-neutral-950/95 border-2 border-red-500 shadow-red-950/90 scale-105 ring-4 ring-red-500/30'
+                        : 'bg-[#cbd5e1]/95 hover:bg-white border-white/60 hover:scale-102'
                     }`}
                   >
-                    {/* Top Label: PISTA */}
-                    <span className={`text-[10px] sm:text-[11px] font-black uppercase tracking-widest ${isSelected ? 'text-neutral-300' : 'text-neutral-700'}`}>
-                      PISTA
+                    {/* Top Label: CANCHA */}
+                    <span className={`text-[8px] sm:text-[9.5px] font-extrabold uppercase tracking-normal leading-none ${isSelected ? 'text-neutral-300' : 'text-neutral-700'}`}>
+                      Cancha
                     </span>
 
-                    {/* Prominent Number Circle */}
-                    <div className={`my-2.5 w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center font-display font-black text-xl sm:text-2xl transition-all shadow-md ${
+                    {/* Prominent Large Circle enclosing the court number */}
+                    <div className={`my-1 w-11 h-11 sm:w-13 sm:h-13 md:w-16 md:h-16 lg:w-18 lg:h-18 rounded-full border-2 sm:border-[3px] flex items-center justify-center font-display font-black text-xl sm:text-2xl md:text-3xl lg:text-4xl transition-all shadow-md ${
                       isSelected
-                        ? 'bg-[#d21a23] text-white shadow-red-900/60 ring-2 ring-red-400/40'
-                        : 'bg-neutral-950 text-white'
+                        ? 'bg-[#d21a23] border-white text-white shadow-red-900/80 scale-105'
+                        : 'bg-neutral-950 border-neutral-800 text-white'
                     }`}>
                       {courtNum}
                     </div>
 
-                    {/* TECHADA Label */}
-                    <span className={`text-[11px] font-black uppercase tracking-wider ${isSelected ? 'text-white' : 'text-neutral-900'}`}>
-                      TECHADA
-                    </span>
-
-                    {/* Bottom Status: Available slots count */}
-                    <div className="mt-0.5">
-                      <span className="text-[11px] font-black text-[#d21a23] block leading-tight">
+                    {/* Bottom info */}
+                    <div className="flex flex-col items-center leading-none">
+                      <span className="text-[9px] sm:text-[10px] font-black text-[#d21a23] block">
                         {availableCount} {availableCount === 1 ? 'libre' : 'libres'}
                       </span>
                     </div>
@@ -443,43 +429,38 @@ export default function BookingSystem() {
             </div>
           </div>
 
-          {/* 3. HORARIOS DISPONIBLES (Glass Card) */}
+          {/* 3. HORARIOS DISPONIBLES (Compact & Structured Glass Card) */}
           <AnimatePresence>
             {selectedDateStr && selectedCourt ? (
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 20 }}
-                className="w-full bg-[#334155]/40 backdrop-blur-xl p-5 sm:p-7 md:p-8 rounded-3xl border border-white/20 shadow-2xl"
+                exit={{ opacity: 0, y: 15 }}
+                className="w-full bg-neutral-950/40 backdrop-blur-md p-4 sm:p-6 md:p-7 rounded-3xl border border-white/20 shadow-2xl"
               >
-                <div className="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-4">
-                  <div className="flex items-center space-x-2.5">
-                    <Clock className="w-5 h-5 sm:w-6 sm:h-6 text-[#d21a23]" />
-                    <div>
-                      <h3 className="text-base sm:text-lg md:text-xl font-display font-black italic uppercase tracking-wider text-white">
-                        3. HORARIOS DISPONIBLES
-                      </h3>
-                      <p className="text-xs sm:text-sm font-bold text-neutral-200 mt-0.5">
-                        Turnos de 1.5 hs para el <span className="text-white underline">{getFormattedDateTitle(selectedDateStr)}</span> en <span className="text-[#d21a23] font-black">Cancha {courts.findIndex(c => c.id === selectedCourt.id) + 1}</span>
-                      </p>
-                    </div>
+                <div className="mb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 border-b border-white/10 pb-3">
+                  <div className="flex items-center space-x-2">
+                    <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-[#d21a23]" />
+                    <h3 className="text-sm sm:text-base md:text-lg font-display font-black italic uppercase tracking-wider text-white">
+                      3. HORARIOS - CANCHA {courts.findIndex(c => c.id === selectedCourt.id) + 1}
+                    </h3>
                   </div>
 
-                  <div className="flex items-center space-x-4 text-[11px] font-black uppercase tracking-wider bg-black/40 px-3.5 py-1.5 rounded-full border border-white/10">
+                  <div className="flex items-center space-x-3 text-[10px] font-black uppercase tracking-wider bg-black/40 px-3 py-1 rounded-full border border-white/10 self-start sm:self-auto">
                     <span className="flex items-center text-emerald-400">
-                      <span className="w-2 h-2 rounded-full bg-emerald-400 mr-1.5" /> Libre
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 mr-1" /> Libre
                     </span>
                     <span className="flex items-center text-neutral-400">
-                      <span className="w-2 h-2 rounded-full bg-neutral-500 mr-1.5" /> Ocupado
+                      <span className="w-1.5 h-1.5 rounded-full bg-neutral-500 mr-1" /> Ocupado
                     </span>
                     <span className="flex items-center text-amber-400">
-                      <span className="w-2 h-2 rounded-full bg-amber-400 mr-1.5" /> Fijo
+                      <span className="w-1.5 h-1.5 rounded-full bg-amber-400 mr-1" /> Fijo
                     </span>
                   </div>
                 </div>
 
-                {/* Grid of time slots */}
-                <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 sm:gap-4">
+                {/* Structured Compact Grid of Time Slots */}
+                <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2 sm:gap-2.5">
                   {TIME_SLOTS.map((time) => {
                     const slotState = getSlotState(time, selectedDateStr, selectedCourt.id);
                     const isSelected = selectedTime === time;
@@ -488,11 +469,11 @@ export default function BookingSystem() {
                       return (
                         <div
                           key={time}
-                          className="bg-black/40 p-4 rounded-2xl border border-white/5 text-center cursor-not-allowed opacity-40"
+                          className="bg-black/40 py-2.5 px-2 rounded-xl border border-white/5 text-center cursor-not-allowed opacity-35"
                         >
-                          <span className="block text-base font-black text-neutral-400">{time} hs</span>
-                          <span className="block text-[10px] font-bold uppercase text-neutral-500 mt-1">
-                            Reservado
+                          <span className="block text-xs sm:text-sm font-black text-neutral-400">{time} hs</span>
+                          <span className="block text-[8px] font-bold uppercase text-neutral-500 mt-0.5">
+                            Ocupado
                           </span>
                         </div>
                       );
@@ -502,11 +483,11 @@ export default function BookingSystem() {
                       return (
                         <div
                           key={time}
-                          className="bg-amber-950/30 p-4 rounded-2xl border border-amber-600/40 text-center cursor-not-allowed opacity-60"
+                          className="bg-amber-950/30 py-2.5 px-2 rounded-xl border border-amber-600/40 text-center cursor-not-allowed opacity-55"
                         >
-                          <span className="block text-base font-black text-amber-400">{time} hs</span>
-                          <span className="block text-[9px] font-black uppercase text-amber-400 mt-1 tracking-wider">
-                            Fijo Mensual
+                          <span className="block text-xs sm:text-sm font-black text-amber-400">{time} hs</span>
+                          <span className="block text-[8px] font-black uppercase text-amber-400 mt-0.5 tracking-tight">
+                            Fijo
                           </span>
                         </div>
                       );
@@ -516,15 +497,15 @@ export default function BookingSystem() {
                       <button
                         key={time}
                         onClick={() => handleTimeSelect(time)}
-                        className={`p-4 rounded-2xl border text-center transition-all cursor-pointer ${
+                        className={`py-2.5 px-2 rounded-xl border text-center transition-all cursor-pointer ${
                           isSelected
-                            ? 'bg-[#d21a23] text-white border-red-400 shadow-xl shadow-red-950/60 scale-105'
+                            ? 'bg-[#d21a23] text-white border-red-400 shadow-md shadow-red-950/60 scale-105'
                             : 'bg-emerald-900/30 hover:bg-emerald-800/50 border-emerald-400/40 hover:border-emerald-400 text-white shadow-sm hover:scale-[1.02]'
                         }`}
                       >
-                        <span className="block text-base sm:text-lg font-black">{time} hs</span>
-                        <span className="block text-[10px] font-black uppercase mt-1 tracking-wider text-emerald-300">
-                          Disponible
+                        <span className="block text-xs sm:text-sm font-black">{time} hs</span>
+                        <span className="block text-[8px] sm:text-[9px] font-black uppercase mt-0.5 tracking-tight text-emerald-300">
+                          Libre
                         </span>
                       </button>
                     );
@@ -592,13 +573,13 @@ export default function BookingSystem() {
                     value={userName}
                     onChange={(e) => setUserName(e.target.value)}
                     placeholder="Ej. Juan Pérez"
-                    className="w-full bg-neutral-900 border border-neutral-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#d21a23]"
+                    className="w-full bg-neutral-900 border border-neutral-700 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-[#d21a23]"
                   />
                 </div>
 
                 <div>
                   <label className="block text-xs font-bold uppercase tracking-wider text-neutral-300 mb-1">
-                    WhatsApp de Contacto *
+                    Teléfono / WhatsApp *
                   </label>
                   <input
                     type="tel"
@@ -606,22 +587,11 @@ export default function BookingSystem() {
                     value={userPhone}
                     onChange={(e) => setUserPhone(e.target.value)}
                     placeholder="Ej. 221 604-9987"
-                    className="w-full bg-neutral-900 border border-neutral-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#d21a23]"
+                    className="w-full bg-neutral-900 border border-neutral-700 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-[#d21a23]"
                   />
-                </div>
-
-                <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider text-neutral-300 mb-1">
-                    Email para comprobante *
-                  </label>
-                  <input
-                    type="email"
-                    required
-                    value={userEmail}
-                    onChange={(e) => setUserEmail(e.target.value)}
-                    placeholder="Ej. juan@gmail.com"
-                    className="w-full bg-neutral-900 border border-neutral-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#d21a23]"
-                  />
+                  <p className="text-[11px] text-neutral-400 mt-1.5 font-medium">
+                    Al confirmar, se abrirá WhatsApp automáticamente con los datos de tu reserva para que el club te la confirme.
+                  </p>
                 </div>
 
                 {errorMsg && (
@@ -635,16 +605,16 @@ export default function BookingSystem() {
                   <button
                     type="button"
                     onClick={() => setCheckoutStep('selection')}
-                    className="w-1/3 py-3 rounded-xl border border-neutral-700 text-xs font-bold uppercase text-neutral-400 hover:text-white transition-colors"
+                    className="w-1/3 py-3.5 rounded-xl border border-neutral-700 text-xs font-bold uppercase text-neutral-400 hover:text-white transition-colors cursor-pointer"
                   >
                     Volver
                   </button>
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-2/3 py-3 rounded-xl bg-[#d21a23] hover:bg-red-700 text-white text-xs font-black uppercase tracking-wider transition-all shadow-lg shadow-red-900/50 flex items-center justify-center cursor-pointer"
+                    className="w-2/3 py-3.5 rounded-xl bg-[#25D366] hover:bg-[#1EBE5D] text-neutral-950 text-xs font-black uppercase tracking-wider transition-all shadow-lg shadow-emerald-950/50 flex items-center justify-center space-x-2 cursor-pointer"
                   >
-                    {isSubmitting ? 'Confirmando...' : 'Confirmar Reserva'}
+                    <span>{isSubmitting ? 'Generando...' : 'Reservar por WhatsApp'}</span>
                   </button>
                 </div>
               </form>
@@ -668,28 +638,45 @@ export default function BookingSystem() {
               </div>
 
               <h3 className="text-xl font-display font-black uppercase tracking-tight text-white mb-1">
-                ¡Reserva Confirmada!
+                ¡Solicitud de Reserva Lista!
               </h3>
               <p className="text-xs text-neutral-400 mb-6">
-                Código de reserva: <span className="font-mono font-bold text-white">{bookingResult.id}</span>
+                Te enviamos a WhatsApp para la confirmación inmediata. Código: <span className="font-mono font-bold text-white">{bookingResult.id}</span>
               </p>
 
               <div className="bg-neutral-900 p-4 rounded-xl border border-neutral-800 text-xs text-left space-y-2 mb-6">
                 <p><span className="text-neutral-400">Titular:</span> <span className="font-bold text-white">{bookingResult.userName}</span></p>
+                <p><span className="text-neutral-400">Teléfono:</span> <span className="font-bold text-white">{bookingResult.userPhone}</span></p>
                 <p><span className="text-neutral-400">Día:</span> <span className="font-bold text-white">{bookingResult.dateFormatted}</span></p>
                 <p><span className="text-neutral-400">Horario:</span> <span className="font-bold text-[#d21a23]">{bookingResult.timeSlot} hs</span></p>
-                <p><span className="text-neutral-400">Cancha:</span> <span className="font-bold text-white">{bookingResult.courtName}</span></p>
+                <p><span className="text-neutral-400">Cancha:</span> <span className="font-bold text-white">{bookingResult.courtName} (Techada)</span></p>
               </div>
 
-              <button
-                onClick={() => {
-                  setCheckoutStep('selection');
-                  setSelectedTime('');
-                }}
-                className="w-full py-3 rounded-xl bg-[#d21a23] hover:bg-red-700 text-white text-xs font-black uppercase tracking-wider transition-colors cursor-pointer"
-              >
-                Listo, volver al inicio
-              </button>
+              <div className="space-y-3">
+                <a
+                  href={`https://wa.me/5492216049987?text=${encodeURIComponent(`¡Hola Quento Club! Quiero confirmar mi reserva de cancha:
+🎾 Cancha: ${bookingResult.courtName} (Techada)
+📅 Día: ${bookingResult.dateFormatted}
+⏰ Horario: ${bookingResult.timeSlot} hs
+👤 Nombre: ${bookingResult.userName}
+📱 Teléfono: ${bookingResult.userPhone}`)}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="w-full py-3.5 rounded-xl bg-[#25D366] hover:bg-[#1EBE5D] text-neutral-950 text-xs font-black uppercase tracking-wider transition-all flex items-center justify-center shadow-lg cursor-pointer"
+                >
+                  Reabrir mensaje de WhatsApp
+                </a>
+
+                <button
+                  onClick={() => {
+                    setCheckoutStep('selection');
+                    setSelectedTime('');
+                  }}
+                  className="w-full py-3 rounded-xl bg-neutral-900 hover:bg-neutral-800 text-neutral-300 text-xs font-bold uppercase tracking-wider transition-colors cursor-pointer"
+                >
+                  Volver al inicio
+                </button>
+              </div>
             </motion.div>
           </div>
         )}

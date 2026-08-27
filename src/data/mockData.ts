@@ -4,69 +4,69 @@ import { images } from '../assets';
 export const courts: Court[] = [
   {
     id: 'court-1',
-    name: 'Cancha 1 (Cubierta Premium)',
+    name: 'Cancha 1 (Techada)',
     type: 'covered',
     surface: 'carpet',
     hasGlassWalls: true,
     hasLighting: true,
     priceHour: 12000,
-    image: images.canchaIndoor,
-    features: ['Estructura techada', 'Alfombra azul premium', 'Blindex templado', 'Iluminación LED de alta potencia']
+    image: images.quentoCanchaOk,
+    features: ['Estructura techada', 'Césped azul premium', 'Blindex templado', 'Iluminación LED de alta potencia']
   },
   {
     id: 'court-2',
-    name: 'Cancha 2 (Cubierta Premium)',
+    name: 'Cancha 2 (Techada)',
     type: 'covered',
     surface: 'carpet',
     hasGlassWalls: true,
     hasLighting: true,
     priceHour: 12000,
-    image: images.canchaIndoor,
-    features: ['Estructura techada', 'Alfombra azul premium', 'Blindex templado', 'Iluminación LED de alta potencia']
+    image: images.quentoCanchaOk,
+    features: ['Estructura techada', 'Césped azul premium', 'Blindex templado', 'Iluminación LED de alta potencia']
   },
   {
     id: 'court-3',
-    name: 'Cancha 3 (Cubierta Premium)',
+    name: 'Cancha 3 (Techada)',
     type: 'covered',
     surface: 'carpet',
     hasGlassWalls: true,
     hasLighting: true,
     priceHour: 12000,
-    image: images.canchaIndoor,
-    features: ['Estructura techada', 'Alfombra azul premium', 'Blindex templado', 'Iluminación LED de alta potencia']
+    image: images.quentoCanchaOk,
+    features: ['Estructura techada', 'Césped azul premium', 'Blindex templado', 'Iluminación LED de alta potencia']
   },
   {
     id: 'court-4',
-    name: 'Cancha 4 (Semicubierta)',
+    name: 'Cancha 4 (Techada)',
     type: 'covered',
     surface: 'carpet',
     hasGlassWalls: true,
     hasLighting: true,
-    priceHour: 11000,
-    image: images.canchaIndoor,
-    features: ['Estructura semicubierta', 'Alfombra azul', 'Blindex templado', 'Iluminación LED profesional']
+    priceHour: 12000,
+    image: images.quentoCanchaOk,
+    features: ['Estructura techada', 'Césped azul', 'Blindex templado', 'Iluminación LED profesional']
   },
   {
     id: 'court-5',
-    name: 'Cancha 5 (Descubierta Parque)',
-    type: 'outdoor',
+    name: 'Cancha 5 (Techada)',
+    type: 'covered',
     surface: 'carpet',
     hasGlassWalls: true,
     hasLighting: true,
-    priceHour: 9000,
-    image: images.canchaOutdoor,
-    features: ['Cancha descubierta al aire libre', 'Alfombra azul profesional', 'Blindex templado', 'Iluminación LED nocturna']
+    priceHour: 12000,
+    image: images.quentoLugar,
+    features: ['Estructura techada', 'Césped azul profesional', 'Blindex templado', 'Iluminación LED']
   },
   {
     id: 'court-6',
-    name: 'Cancha 6 (Descubierta Parque)',
-    type: 'outdoor',
+    name: 'Cancha 6 (Techada)',
+    type: 'covered',
     surface: 'carpet',
     hasGlassWalls: true,
     hasLighting: true,
-    priceHour: 9000,
-    image: images.canchaOutdoor,
-    features: ['Cancha descubierta al aire libre', 'Alfombra azul profesional', 'Blindex templado', 'Iluminación LED nocturna']
+    priceHour: 12000,
+    image: images.complejo2,
+    features: ['Estructura techada', 'Césped azul profesional', 'Blindex templado', 'Iluminación LED']
   }
 ];
 
@@ -74,22 +74,22 @@ export const clubInstallations: ClubInstallation[] = [
   {
     id: 'inst-1',
     title: 'Showroom y Pro-Shop',
-    description: 'Nuestra tienda de equipamiento oficial. Encontrá paletas de las mejores marcas del mercado (Bullpadel, Nox, Babolat, Head), tubos de pelotas, indumentaria, grips y accesorios con el mejor asesoramiento profesional.',
-    image: images.clubLounge,
+    description: 'Nuestra tienda de equipamiento oficial. Encontrá paletas de las mejores marcas del mercado, tubos de pelotas, indumentaria, grips y accesorios con el mejor asesoramiento profesional.',
+    image: images.quentoBar,
     size: 'large'
   },
   {
     id: 'inst-2',
     title: 'Quincho y Parrillas',
-    description: 'Un espacio semicubierto completamente equipado con parrilla de gran tamaño y mesas rústicas para juntarse con amigos y familia después de los partidos o celebrar eventos deportivos.',
-    image: images.clubGrills,
+    description: 'Un espacio equipado para juntarse con amigos y familia después de los partidos o celebrar eventos deportivos y tercer tiempo.',
+    image: images.quentoLugar,
     size: 'medium'
   },
   {
     id: 'inst-3',
     title: 'SUM & Restobar',
-    description: 'Área social climatizada con servicio de cafetería de especialidad, bebidas, snacks y pantallas gigantes para disfrutar de los torneos profesionales del Premier Padel en un ambiente cómodo y relajado.',
-    image: images.clubLounge,
+    description: 'Área social climatizada con servicio de cafetería de especialidad, bebidas, snacks y pantallas gigantes para disfrutar de los torneos en un ambiente cómodo.',
+    image: images.quentoBar,
     size: 'small'
   }
 ];

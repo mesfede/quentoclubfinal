@@ -28,10 +28,10 @@ export default function Hero({ onNavigateToBooking, onNavigateToExplore }: HeroP
   const titleVariants = {
     enter: {
       opacity: 0,
-      x: 180,
-      skewX: -20,
-      scaleX: 1.25,
-      filter: 'blur(10px)',
+      x: 280,
+      skewX: -18,
+      scaleX: 1.2,
+      filter: 'blur(20px)',
     },
     center: {
       opacity: 1,
@@ -40,25 +40,25 @@ export default function Hero({ onNavigateToBooking, onNavigateToExplore }: HeroP
       scaleX: 1,
       filter: 'blur(0px)',
       transition: {
-        x: { type: 'spring', stiffness: 260, damping: 22, duration: 0.45 },
-        opacity: { duration: 0.3 },
-        skewX: { duration: 0.35 },
-        scaleX: { duration: 0.35 },
-        filter: { duration: 0.3 }
+        x: { ease: [0.16, 1, 0.3, 1], duration: 0.38 },
+        opacity: { duration: 0.25 },
+        skewX: { ease: [0.16, 1, 0.3, 1], duration: 0.32 },
+        scaleX: { ease: [0.16, 1, 0.3, 1], duration: 0.32 },
+        filter: { duration: 0.28 }
       }
     },
     exit: {
       opacity: 0,
-      x: -220,
-      skewX: 25,
-      scaleX: 1.35,
-      filter: 'blur(12px)',
+      x: -280,
+      skewX: 18,
+      scaleX: 1.25,
+      filter: 'blur(22px)',
       transition: {
-        x: { ease: [0.32, 0, 0.67, 0], duration: 0.35 },
-        opacity: { duration: 0.25 },
-        skewX: { duration: 0.3 },
-        scaleX: { duration: 0.3 },
-        filter: { duration: 0.25 }
+        x: { ease: [0.7, 0, 0.84, 0], duration: 0.3 },
+        opacity: { duration: 0.2 },
+        skewX: { duration: 0.25 },
+        scaleX: { duration: 0.25 },
+        filter: { duration: 0.22 }
       }
     }
   };
@@ -72,8 +72,8 @@ export default function Hero({ onNavigateToBooking, onNavigateToExplore }: HeroP
           muted
           loop
           playsInline
-          poster={images.heroBg}
-          className="w-full h-full object-cover opacity-60 scale-105"
+          poster={images.quentoCanchaOk}
+          className="w-full h-full object-cover opacity-85 scale-105"
         >
           {/* Main requested video */}
           <source src={videos.heroVideo} type="video/mp4" />
@@ -81,8 +81,8 @@ export default function Hero({ onNavigateToBooking, onNavigateToExplore }: HeroP
           <source src="https://player.vimeo.com/external/494252666.hd.mp4?s=2b1464c2f42a59f5165dc6dfcf7e33e9b08b3e8e&profile_id=170&oauth2_token_id=57447761" type="video/mp4" />
         </video>
         
-        {/* Layer of contrast/overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/50 to-transparent z-10" />
+        {/* Layer of contrast/overlay - softer to keep video bright and clear */}
+        <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/90 via-neutral-950/30 to-neutral-950/20 z-10" />
       </div>
 
       {/* Hero Content */}
@@ -109,38 +109,51 @@ export default function Hero({ onNavigateToBooking, onNavigateToExplore }: HeroP
             Disfrutá del mejor pádel en Quento Club. 6 canchas de primer nivel, disponibilidad inmediata y un ambiente inmejorable.
           </p>
         </div>
-
-        {/* Buttons: Smaller 'Reservar ahora' and brown-toned 'Ver canchas' */}
-        <div className="mt-8 flex flex-col sm:flex-row gap-3.5 w-full sm:w-auto px-4 sm:px-0 justify-center items-center">
-          <button
-            onClick={onNavigateToBooking}
-            className="w-full sm:w-auto inline-flex items-center justify-center px-7 py-3.5 rounded-xl bg-[#d21a23] hover:bg-[#b9a791] text-white font-extrabold text-xs sm:text-sm tracking-wider uppercase transition-all duration-300 transform hover:scale-[1.02] shadow-lg shadow-red-950/50 cursor-pointer focus:outline-none"
-          >
-            <Calendar className="w-4 h-4 mr-2" />
-            Reservar ahora
-          </button>
-          <button
-            onClick={onNavigateToExplore}
-            className="w-full sm:w-auto inline-flex items-center justify-center px-7 py-3.5 rounded-xl bg-[#b9a791] hover:bg-[#a3917b] text-neutral-950 font-black text-xs sm:text-sm tracking-wider uppercase transition-all duration-300 transform hover:scale-[1.02] shadow-lg shadow-black/30 cursor-pointer focus:outline-none"
-          >
-            Ver Canchas
-          </button>
-        </div>
       </div>
 
-      {/* Floating Scroll Indicator */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 flex flex-col items-center">
-        <span className="text-[10px] text-neutral-500 font-bold tracking-[0.3em] uppercase mb-2 animate-pulse">
+      {/* Floating Scroll Indicator with Bouncing Tennis / Padel Ball */}
+      <div 
+        className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 flex flex-col items-center cursor-pointer group"
+        onClick={onNavigateToExplore}
+      >
+        <span className="text-[10px] sm:text-xs text-neutral-300 group-hover:text-white font-black tracking-[0.25em] uppercase mb-2 drop-shadow">
           Deslizar
         </span>
-        <motion.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ repeat: Infinity, duration: 1.5 }}
-          className="p-1 rounded-full border border-neutral-800 cursor-pointer"
-          onClick={onNavigateToExplore}
-        >
-          <ChevronDown className="w-4 h-4 text-neutral-400" />
-        </motion.div>
+        
+        {/* Tennis / Padel Bouncing Ball */}
+        <div className="relative w-7 h-10 flex flex-col items-center justify-start">
+          <motion.div
+            animate={{ 
+              y: [0, 18, 2, 18, 0],
+              scaleY: [1, 0.7, 1.05, 0.75, 1],
+              scaleX: [1, 1.25, 0.95, 1.2, 1]
+            }}
+            transition={{ 
+              repeat: Infinity, 
+              duration: 1.4,
+              ease: "easeInOut"
+            }}
+            className="w-4 h-4 rounded-full bg-[#ccff00] border border-lime-300 shadow-lg shadow-lime-400/50 flex items-center justify-center relative overflow-hidden"
+          >
+            {/* Padel / Tennis Ball Curved Seam */}
+            <div className="absolute inset-0 border border-white/60 rounded-full scale-110 -rotate-45 opacity-80" />
+            <div className="w-1 h-1 rounded-full bg-white/50" />
+          </motion.div>
+          
+          {/* Subtle Ground Shadow */}
+          <motion.div
+            animate={{
+              scale: [0.4, 1.1, 0.5, 1, 0.4],
+              opacity: [0.2, 0.7, 0.3, 0.6, 0.2]
+            }}
+            transition={{
+              repeat: Infinity,
+              duration: 1.4,
+              ease: "easeInOut"
+            }}
+            className="w-3.5 h-1 bg-black/80 rounded-full blur-[1px] mt-auto"
+          />
+        </div>
       </div>
     </section>
   );
