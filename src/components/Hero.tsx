@@ -86,9 +86,9 @@ export default function Hero({ onNavigateToBooking, onNavigateToExplore }: HeroP
       </div>
 
       {/* Hero Content */}
-      <div className="relative z-20 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white mt-10 flex flex-col items-center justify-center">
+      <div className="relative z-20 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white -mt-16 sm:mt-6 md:mt-10 flex flex-col items-center justify-center">
         {/* Dynamic Slide Container - Unmasked, sporty, fits in max 2 lines */}
-        <div className="min-h-[90px] sm:min-h-[130px] md:min-h-[150px] flex items-center justify-center w-full relative px-2">
+        <div className="min-h-[80px] sm:min-h-[130px] md:min-h-[150px] flex items-center justify-center w-full relative px-2">
           <AnimatePresence mode="wait">
             <motion.h1
               key={currentSlide}
@@ -104,8 +104,8 @@ export default function Hero({ onNavigateToBooking, onNavigateToExplore }: HeroP
         </div>
 
         {/* Fixed bajada / Subtitle debajo de cada título */}
-        <div className="max-w-2xl mt-4">
-          <p className="text-sm sm:text-base md:text-lg text-neutral-200 font-medium tracking-wide leading-relaxed drop-shadow">
+        <div className="max-w-2xl mt-3.5 sm:mt-4 px-2">
+          <p className="text-[13.5px] sm:text-base md:text-lg text-neutral-200 font-medium tracking-wide leading-relaxed drop-shadow">
             Disfrutá del mejor pádel en Quento Club. 6 canchas de primer nivel, disponibilidad inmediata y un ambiente inmejorable.
           </p>
         </div>
@@ -113,7 +113,7 @@ export default function Hero({ onNavigateToBooking, onNavigateToExplore }: HeroP
 
       {/* Floating Scroll Indicator with Bouncing Tennis / Padel Ball */}
       <div 
-        className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 flex flex-col items-center cursor-pointer group"
+        className="absolute bottom-28 sm:bottom-10 md:bottom-8 left-1/2 transform -translate-x-1/2 z-20 flex flex-col items-center cursor-pointer group"
         onClick={onNavigateToExplore}
       >
         <span className="text-[10px] sm:text-xs text-neutral-300 group-hover:text-white font-black tracking-[0.25em] uppercase mb-2 drop-shadow">

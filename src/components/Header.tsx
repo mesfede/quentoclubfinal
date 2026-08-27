@@ -58,20 +58,20 @@ export default function Header({ onNavigateToSection }: HeaderProps) {
                   alt="Quento Club Logo" 
                   className={`w-auto object-contain transition-all duration-300 group-hover:scale-105 filter drop-shadow-sm block ${
                     isScrolled 
-                      ? 'h-11 sm:h-14 md:h-16 max-w-[200px] sm:max-w-[290px]' 
-                      : 'h-14 sm:h-18 md:h-24 max-w-[240px] sm:max-w-[360px]'
+                      ? 'h-12 sm:h-14 md:h-16 max-w-[220px] sm:max-w-[290px]' 
+                      : 'h-18 sm:h-22 md:h-26 max-w-[300px] sm:max-w-[380px]'
                   }`}
                   referrerPolicy="no-referrer"
                   onError={() => setLogoFailed(true)}
                 />
               ) : (
-                <div className="flex items-center justify-center space-x-2">
+                <div className="flex items-center justify-center space-x-2.5">
                   <div className={`rounded-xl bg-[#d21a23] flex items-center justify-center overflow-hidden shadow-md shadow-red-900/40 transition-all ${
-                    isScrolled ? 'w-10 h-10' : 'w-12 h-12'
+                    isScrolled ? 'w-11 h-11' : 'w-14 h-14'
                   }`}>
-                    <span className="font-display font-black text-white text-2xl tracking-tight">Q</span>
+                    <span className="font-display font-black text-white text-3xl tracking-tight">Q</span>
                   </div>
-                  <span className="font-display font-black text-neutral-950 text-xl sm:text-2xl tracking-wider">
+                  <span className="font-display font-black text-neutral-950 text-2xl sm:text-3xl tracking-wider">
                     QUENTO
                   </span>
                 </div>
