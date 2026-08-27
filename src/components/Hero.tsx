@@ -113,7 +113,7 @@ export default function Hero({ onNavigateToBooking, onNavigateToExplore }: HeroP
 
       {/* Floating Scroll Indicator with Bouncing Tennis / Padel Ball */}
       <div 
-        className="absolute bottom-36 sm:bottom-10 md:bottom-8 left-1/2 transform -translate-x-1/2 z-20 flex flex-col items-center cursor-pointer group"
+        className="absolute bottom-44 sm:bottom-12 md:bottom-8 left-1/2 transform -translate-x-1/2 z-20 flex flex-col items-center cursor-pointer group"
         onClick={onNavigateToExplore}
       >
         <span className="text-[10px] sm:text-xs text-neutral-300 group-hover:text-white font-black tracking-[0.25em] uppercase mb-2 drop-shadow">
