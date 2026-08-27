@@ -7,7 +7,7 @@ export default function Ubicacion() {
   const iframeSrc = 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3278.487823547844!2d-58.0776510234125!3d-34.856557570417015!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95a2e6396e94a8f9%3A0xe96d91f24d7768a8!2sQuento%20Club%20Padel!5e0!3m2!1ses-419!2sar!4v1710000000000';
 
   return (
-    <section id="ubicacion" className="py-24 bg-neutral-50 dark:bg-neutral-900 border-b border-neutral-100 dark:border-neutral-800 scroll-mt-16">
+    <section id="contacto" className="py-24 bg-neutral-50 dark:bg-neutral-900 border-b border-neutral-100 dark:border-neutral-800 scroll-mt-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Layout container grid */}
@@ -16,9 +16,9 @@ export default function Ubicacion() {
           {/* Info side (5 cols) */}
           <div className="lg:col-span-5 flex flex-col justify-between">
             <div>
-              <span className="text-xs font-black uppercase tracking-[0.25em] text-blue-600 block mb-2">¿Cómo llegar?</span>
-              <h2 className="text-4xl sm:text-5xl font-display font-black text-neutral-900 dark:text-white uppercase tracking-tight leading-none mb-6">
-                UBICACIÓN Y HORARIOS
+              <span className="text-xs font-black uppercase tracking-[0.25em] text-[#d21a23] block mb-2">¿Cómo llegar?</span>
+              <h2 className="text-2xl sm:text-4xl md:text-5xl font-display font-black text-neutral-900 dark:text-white uppercase tracking-tight leading-none mb-6">
+                CONTACTO Y HORARIOS
               </h2>
               
               <p className="text-sm text-neutral-500 dark:text-neutral-400 font-medium leading-relaxed mb-10">
@@ -30,7 +30,7 @@ export default function Ubicacion() {
                 
                 {/* 1. Direccion */}
                 <div className="flex items-start space-x-4">
-                  <div className="p-3 rounded-xl bg-blue-500/5 text-blue-600 dark:text-blue-400 border border-blue-500/10 shrink-0">
+                  <div className="p-3 rounded-xl bg-[#d21a23]/5 text-[#d21a23] border border-[#d21a23]/10 shrink-0">
                     <MapPin className="w-5 h-5" />
                   </div>
                   <div>
@@ -46,7 +46,7 @@ export default function Ubicacion() {
 
                 {/* 2. Horarios */}
                 <div className="flex items-start space-x-4">
-                  <div className="p-3 rounded-xl bg-blue-500/5 text-blue-600 dark:text-blue-400 border border-blue-500/10 shrink-0">
+                  <div className="p-3 rounded-xl bg-[#d21a23]/5 text-[#d21a23] border border-[#d21a23]/10 shrink-0">
                     <Clock className="w-5 h-5" />
                   </div>
                   <div>
@@ -62,7 +62,7 @@ export default function Ubicacion() {
 
                 {/* 3. Indicaciones de acceso */}
                 <div className="flex items-start space-x-4">
-                  <div className="p-3 rounded-xl bg-blue-500/5 text-blue-600 dark:text-blue-400 border border-blue-500/10 shrink-0">
+                  <div className="p-3 rounded-xl bg-[#d21a23]/5 text-[#d21a23] border border-[#d21a23]/10 shrink-0">
                     <Compass className="w-5 h-5" />
                   </div>
                   <div>
@@ -82,7 +82,7 @@ export default function Ubicacion() {
                 href={mapQueryUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center justify-center px-6 py-4 rounded-xl bg-neutral-950 dark:bg-neutral-100 text-white dark:text-neutral-950 hover:bg-blue-600 dark:hover:bg-blue-500 hover:text-white dark:hover:text-white font-extrabold text-xs uppercase tracking-wider transition-all shadow-md"
+                className="inline-flex items-center justify-center px-6 py-4 rounded-xl bg-neutral-950 dark:bg-neutral-100 text-white dark:text-neutral-950 hover:bg-[#d21a23] dark:hover:bg-[#d21a23] hover:text-white dark:hover:text-white font-extrabold text-xs uppercase tracking-wider transition-all shadow-md"
               >
                 <Navigation className="w-4 h-4 mr-2" />
                 Cómo llegar con GPS
@@ -116,12 +116,12 @@ export default function Ubicacion() {
             </div>
             
             <div className="p-4 flex items-center justify-between text-xs text-neutral-400 font-bold bg-neutral-50 dark:bg-neutral-950 border-t border-neutral-100 dark:border-neutral-900 rounded-b-xl">
-              <span className="flex items-center"><MapPin className="w-4 h-4 mr-1.5 text-blue-500" /> Camino Centenario 8907</span>
+              <span className="flex items-center"><MapPin className="w-4 h-4 mr-1.5 text-[#d21a23]" /> Camino Centenario 8907</span>
               <a
                 href={mapQueryUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="text-blue-600 dark:text-blue-400 hover:underline inline-flex items-center"
+                className="text-[#d21a23] hover:text-[#b9a791] hover:underline inline-flex items-center transition-colors"
               >
                 Ver pantalla completa <Share2 className="w-3.5 h-3.5 ml-1" />
               </a>

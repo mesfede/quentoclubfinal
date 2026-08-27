@@ -15,10 +15,13 @@ export interface Booking {
   courtId: string;
   courtName: string;
   date: string; // YYYY-MM-DD
+  dateFormatted?: string;
   timeSlot: string; // HH:MM
   userName: string;
   userPhone: string;
   userEmail: string;
+  totalPrice?: number;
+  status?: string;
   createdAt: string;
 }
 

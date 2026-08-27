@@ -51,7 +51,7 @@ export default function MobileStickyBar({ onNavigateToBooking }: MobileStickyBar
             
             <button
               onClick={onNavigateToBooking}
-              className="px-5 py-3 bg-blue-600 hover:bg-blue-500 text-white text-xs font-black uppercase tracking-wider rounded-xl flex items-center space-x-1.5 shadow-md shadow-blue-500/20"
+              className="px-5 py-3 bg-[#d21a23] hover:bg-[#b9a791] text-white text-xs font-black uppercase tracking-wider rounded-xl flex items-center space-x-1.5 shadow-md shadow-red-500/20"
             >
               <Calendar className="w-4 h-4" />
               <span>Reservar Cancha</span>

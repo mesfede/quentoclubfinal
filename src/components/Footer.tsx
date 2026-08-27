@@ -1,5 +1,5 @@
-import { MouseEvent, useState } from 'react';
-import { Calendar, Shield, Instagram, Facebook, Phone, Mail, MapPin, ChevronUp } from 'lucide-react';
+import { useState } from 'react';
+import { MapPin, Phone, Mail, MessageSquare, ExternalLink, Instagram } from 'lucide-react';
 import { images } from '../assets';
 
 interface FooterProps {
@@ -10,181 +10,188 @@ interface FooterProps {
 export default function Footer({ onNavigateToBooking, onNavigateToSection }: FooterProps) {
   const [logoFailed, setLogoFailed] = useState(false);
 
-  const handleBackToTop = (e: MouseEvent) => {
-    e.preventDefault();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  const localKeywords = [
-    'Pádel Villa Elisa',
-    'Reservar Cancha La Plata',
-    'Canchas Cubiertas de Pádel',
-    'Quento Club Pádel',
-    'Pádel City Bell',
-    'Césped Sintético Azul',
-    'Blindex',
-    'Clases de Pádel La Plata',
-    'Torneos de Pádel Buenos Aires'
-  ];
-
   return (
-    <footer className="bg-neutral-950 text-neutral-400 border-t border-neutral-900">
-      
-      {/* 1. Final Action CTA block */}
-      <div className="relative py-20 overflow-hidden border-b border-neutral-900">
-        {/* Decorative dynamic abstract ambient lighting grids */}
-        <div className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_top_right,rgba(37,99,235,0.08),transparent_40%)]" />
+    <footer className="bg-[#b8a791] text-neutral-900 pt-16 pb-12 transition-colors">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        <div className="relative z-10 max-w-5xl mx-auto px-4 text-center">
-          <span className="text-xs font-black uppercase tracking-[0.3em] text-blue-500 block mb-2">Comenzá a jugar</span>
-          <h2 className="text-4xl sm:text-6xl font-display font-black text-white uppercase tracking-tight leading-none mb-6">
-            ¿LISTO PARA ENTRAR <br />A LA CANCHA?
-          </h2>
-          <p className="text-sm sm:text-base text-neutral-400 max-w-lg mx-auto leading-relaxed mb-8">
-            Seleccioná tu fecha, elegí el horario que mejor te convenga y reservá en menos de un minuto sin registrarte de forma complicada.
-          </p>
-
-          <button
-            onClick={onNavigateToBooking}
-            className="inline-flex items-center justify-center px-10 py-5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-extrabold text-sm tracking-wider uppercase transition-all duration-300 transform hover:scale-[1.03] shadow-lg shadow-blue-500/10 cursor-pointer"
-          >
-            <Calendar className="w-5 h-5 mr-3" />
-            RESERVAR TURNO EN LÍNEA
-          </button>
-        </div>
-      </div>
-
-      {/* 2. Structured Information Directories */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-12">
+        {/* 3 Columns Master Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-10 lg:gap-14 pb-14">
           
-          {/* Main profile brand summary (4 cols) */}
+          {/* Column 1: Brand & Badge (4 cols) */}
           <div className="md:col-span-4 space-y-6">
             <a
               href="#"
-              onClick={handleBackToTop}
-              className="flex items-center space-x-2 group focus:outline-none"
+              onClick={(e) => {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              className="inline-block group focus:outline-none"
             >
               {!logoFailed ? (
                 <img 
                   src={images.quentoLogo} 
                   alt="Quento Club Logo" 
-                  className="h-10 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+                  className="h-16 sm:h-20 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
                   referrerPolicy="no-referrer"
                   onError={() => setLogoFailed(true)}
                 />
               ) : (
-                <>
-                  <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center">
-                    <span className="font-display font-black text-white text-base">Q</span>
+                <div className="flex items-center space-x-2">
+                  <div className="w-10 h-10 rounded-xl bg-[#d21a23] flex items-center justify-center shadow-md">
+                    <span className="font-display font-black text-white text-xl">Q</span>
                   </div>
-                  <span className="font-display font-black text-white text-lg tracking-wider">
+                  <span className="font-display font-black text-neutral-950 text-xl tracking-wider">
                     QUENTO CLUB
                   </span>
-                </>
+                </div>
               )}
             </a>
-            
-            <p className="text-xs text-neutral-500 leading-relaxed font-medium">
-              El club de pádel líder de Villa Elisa. Infraestructura deportiva de primer nivel concebida para brindar la mejor experiencia competitiva y de camaradería de la zona.
+
+            <p className="text-xs sm:text-[13px] text-neutral-900 leading-relaxed font-semibold max-w-sm">
+              El club de pádel líder con 6 canchas cubiertas profesionales, césped de alta densidad, blindex, iluminación LED y el mejor ambiente deportivo y social.
             </p>
 
-            <div className="space-y-3.5 text-xs font-semibold text-neutral-400">
-              <a href="https://wa.me/5492216049987" target="_blank" rel="noreferrer" className="flex items-center hover:text-white transition-colors">
-                <Phone className="w-4 h-4 mr-2.5 text-blue-500 shrink-0" />
-                <span>+54 9 221 604-9987</span>
-              </a>
-              <a href="mailto:info@quentoclub.com.ar" className="flex items-center hover:text-white transition-colors">
-                <Mail className="w-4 h-4 mr-2.5 text-blue-500 shrink-0" />
-                <span>contacto@quentoclub.com.ar</span>
-              </a>
-              <span className="flex items-center">
-                <MapPin className="w-4 h-4 mr-2.5 text-blue-500 shrink-0" />
-                <span>Camino Centenario 8907, Villa Elisa</span>
+            <div className="pt-1">
+              <span className="inline-flex items-center space-x-2 px-4 py-2 rounded-full bg-neutral-900/10 border border-neutral-900/15 text-neutral-950 text-[11px] font-black uppercase tracking-wider shadow-sm">
+                <span className="w-2 h-2 rounded-full bg-[#d21a23] shrink-0" />
+                <span>100% CANCHAS CUBIERTAS</span>
               </span>
             </div>
           </div>
 
-          {/* Quick Shortcuts (3 cols) */}
-          <div className="md:col-span-3 space-y-4">
-            <h4 className="text-xs font-black text-white uppercase tracking-widest">Navegación</h4>
-            <div className="grid grid-cols-1 gap-2.5 text-xs font-bold">
-              {[
-                { name: 'Canchas', id: 'canchas' },
-                { name: 'Instalaciones', id: 'instalaciones' },
-                { name: 'Servicios', id: 'servicios' },
-                { name: 'Actividades', id: 'actividades' },
-                { name: 'Ubicación', id: 'ubicacion' },
-              ].map((item) => (
-                <button
-                  key={item.id}
-                  onClick={() => onNavigateToSection(item.id)}
-                  className="text-left text-neutral-500 hover:text-white transition-colors cursor-pointer"
-                >
-                  {item.name}
-                </button>
-              ))}
+          {/* Column 2: Contacto & Reservas (4 cols) */}
+          <div className="md:col-span-4 space-y-5">
+            <h3 className="text-xl sm:text-2xl font-display font-black italic tracking-tight text-neutral-950 uppercase">
+              CONTACTO & RESERVAS
+            </h3>
+
+            <div className="space-y-4 text-xs sm:text-[13px] font-bold text-neutral-900">
+              <div className="flex items-center space-x-3">
+                <MapPin className="w-4 h-4 text-[#d21a23] shrink-0" />
+                <span>La Plata, Buenos Aires, Argentina</span>
+              </div>
+
+              <a 
+                href="https://wa.me/5492216049987" 
+                target="_blank" 
+                rel="noreferrer" 
+                className="flex items-center space-x-3 text-neutral-950 hover:text-[#0f6f4d] transition-colors group"
+              >
+                <div className="w-4 h-4 text-[#0f6f4d] flex items-center justify-center shrink-0">
+                  <MessageSquare className="w-4 h-4 fill-emerald-800/20 text-[#0f6f4d]" />
+                </div>
+                <span className="underline underline-offset-4 font-extrabold">(221) 604-9987</span>
+                <ExternalLink className="w-3.5 h-3.5 text-neutral-700 group-hover:translate-x-0.5 transition-transform" />
+              </a>
+
+              <a 
+                href="tel:+5492216049987" 
+                className="flex items-center space-x-3 hover:text-neutral-950 transition-colors"
+              >
+                <Phone className="w-4 h-4 text-[#d21a23] shrink-0" />
+                <span>+54 9 221 604-9987</span>
+              </a>
+
+              <a 
+                href="mailto:contacto@quentoclub.com.ar" 
+                className="flex items-center space-x-3 hover:text-neutral-950 transition-colors"
+              >
+                <Mail className="w-4 h-4 text-[#d21a23] shrink-0" />
+                <span>contacto@quentoclub.com.ar</span>
+              </a>
             </div>
           </div>
 
-          {/* Local SEO optimization blocks (5 cols) */}
-          <div className="md:col-span-5 space-y-4">
-            <h4 className="text-xs font-black text-white uppercase tracking-widest flex items-center">
-              <Shield className="w-4 h-4 mr-1 text-blue-500" />
-              Búsquedas de Pádel Locales
-            </h4>
-            <p className="text-[11px] text-neutral-500 leading-normal font-medium">
-              Quento Club está preparado y optimizado para búsquedas regionales y locales dentro de la zona norte de La Plata y alrededores:
+          {/* Column 3: Comunidad (4 cols) */}
+          <div className="md:col-span-4 space-y-4">
+            <h3 className="text-xl sm:text-2xl font-display font-black italic tracking-tight text-neutral-950 uppercase">
+              COMUNIDAD
+            </h3>
+
+            <p className="text-xs sm:text-[13px] text-neutral-900 font-semibold leading-relaxed mb-4">
+              Enterate de los próximos torneos, clínicas, eventos y novedades diarias en nuestras redes.
             </p>
-            <div className="flex flex-wrap gap-2 pt-2">
-              {localKeywords.map((tag) => (
-                <span
-                  key={tag}
-                  className="px-2.5 py-1 text-[9px] font-bold uppercase tracking-wider rounded bg-neutral-900 border border-neutral-800 text-neutral-500"
-                >
-                  #{tag}
-                </span>
-              ))}
+
+            <div className="space-y-3">
+              {/* Instagram Card Button */}
+              <a
+                href="https://instagram.com/quentoclub.padel"
+                target="_blank"
+                rel="noreferrer"
+                className="bg-white/90 hover:bg-white p-3.5 rounded-2xl shadow-sm border border-neutral-300/60 flex items-center justify-between transition-all duration-200 hover:scale-[1.01] group cursor-pointer"
+              >
+                <div className="flex items-center space-x-3">
+                  {/* Instagram Gradient Icon Container */}
+                  <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 via-rose-600 to-purple-600 flex items-center justify-center text-white shadow-sm shrink-0">
+                    <Instagram className="w-5 h-5" />
+                  </div>
+                  <div className="flex flex-col text-left">
+                    <span className="font-display font-black text-xs sm:text-sm text-neutral-950 uppercase tracking-tight">
+                      @QUENTO.CLUB
+                    </span>
+                    <span className="text-[11px] text-neutral-600 font-medium leading-none mt-1">
+                      Seguinos en Instagram
+                    </span>
+                  </div>
+                </div>
+                <ExternalLink className="w-4 h-4 text-neutral-400 group-hover:text-neutral-900 transition-colors" />
+              </a>
+
+              {/* WhatsApp Card Button */}
+              <a
+                href="https://wa.me/5492216049987"
+                target="_blank"
+                rel="noreferrer"
+                className="bg-white/90 hover:bg-white p-3.5 rounded-2xl shadow-sm border border-neutral-300/60 flex items-center justify-between transition-all duration-200 hover:scale-[1.01] group cursor-pointer"
+              >
+                <div className="flex items-center space-x-3">
+                  {/* WhatsApp Green Icon Container */}
+                  <div className="w-10 h-10 rounded-xl bg-[#25D366] flex items-center justify-center text-white shadow-sm shrink-0">
+                    <MessageSquare className="w-5 h-5 fill-white" />
+                  </div>
+                  <div className="flex flex-col text-left">
+                    <span className="font-display font-black text-xs sm:text-sm text-neutral-950 uppercase tracking-tight">
+                      QUENTOCLUB WHATSAPP
+                    </span>
+                    <span className="text-[11px] text-neutral-600 font-medium leading-none mt-1">
+                      Atención al instante
+                    </span>
+                  </div>
+                </div>
+                <ExternalLink className="w-4 h-4 text-neutral-400 group-hover:text-neutral-900 transition-colors" />
+              </a>
             </div>
           </div>
 
         </div>
 
-        {/* 3. Social indices & Legal copyright footer */}
-        <div className="mt-16 pt-8 border-t border-neutral-900/60 flex flex-col sm:flex-row items-center justify-between gap-6 text-xs font-semibold">
-          <p className="text-neutral-600">
-            © {new Date().getFullYear()} Quento Club Pádel. Todos los derechos reservados. Rediseño Profesional Premium.
+        {/* Bottom Bar Divider and Copyright */}
+        <div className="pt-8 border-t border-neutral-900/15 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-bold text-neutral-800">
+          <p>
+            © {new Date().getFullYear()} Quento Club. Todos los derechos reservados.
           </p>
 
           <div className="flex items-center space-x-6">
-            <div className="flex space-x-4">
-              <a
-                href="https://instagram.com/quentoclub.padel"
-                target="_blank"
-                rel="noreferrer"
-                className="p-2 bg-neutral-900 hover:bg-blue-600 text-neutral-500 hover:text-white rounded-lg transition-all"
-                aria-label="Instagram de Quento Club"
-              >
-                <Instagram className="w-4 h-4" />
-              </a>
-              <a
-                href="https://facebook.com"
-                target="_blank"
-                rel="noreferrer"
-                className="p-2 bg-neutral-900 hover:bg-blue-600 text-neutral-500 hover:text-white rounded-lg transition-all"
-                aria-label="Facebook de Quento Club"
-              >
-                <Facebook className="w-4 h-4" />
-              </a>
-            </div>
-
             <button
-              onClick={handleBackToTop}
-              className="p-2 bg-neutral-900 hover:bg-blue-600 text-neutral-500 hover:text-white rounded-lg transition-all cursor-pointer flex items-center"
-              aria-label="Volver arriba"
+              onClick={() => onNavigateToSection('el-club')}
+              className="hover:text-neutral-950 transition-colors cursor-pointer"
             >
-              <ChevronUp className="w-4 h-4" />
+              Instalaciones
             </button>
+            <button
+              onClick={onNavigateToBooking}
+              className="hover:text-neutral-950 transition-colors cursor-pointer"
+            >
+              Reservas Online
+            </button>
+            <a
+              href="https://instagram.com/quentoclub.padel"
+              target="_blank"
+              rel="noreferrer"
+              className="hover:text-neutral-950 transition-colors"
+            >
+              Instagram
+            </a>
           </div>
         </div>
 
