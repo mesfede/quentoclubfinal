@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { MapPin, Phone, Mail, MessageSquare, ExternalLink, Instagram, Navigation, Clock, Compass } from 'lucide-react';
 import { images } from '../assets';
+import quentoFooter from '../assets/images/quento_footer.jpg';
 
 interface FooterProps {
   onNavigateToBooking: () => void;
@@ -13,8 +14,20 @@ export default function Footer({ onNavigateToBooking, onNavigateToSection }: Foo
   const iframeSrc = 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3278.487823547844!2d-58.0776510234125!3d-34.856557570417015!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95a2e6396e94a8f9%3A0xe96d91f24d7768a8!2sQuento%20Club%20Padel!5e0!3m2!1ses-419!2sar!4v1710000000000';
 
   return (
-    <footer id="contacto" className="bg-[#b8a791] text-neutral-900 pt-16 pb-12 transition-colors scroll-mt-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <footer 
+      id="contacto" 
+      className="relative overflow-hidden bg-[#B9A791] text-neutral-900 pt-16 pb-12 transition-colors scroll-mt-20"
+    >
+      {/* Fondo de imagen con más presencia y transparencia (textura) */}
+      <div 
+        className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat opacity-[0.24] pointer-events-none mix-blend-luminosity"
+        style={{ backgroundImage: `url(${quentoFooter})` }}
+      />
+      
+      {/* Degradé de transición de alta costura para fundir a negro con la sección superior */}
+      <div className="absolute top-0 left-0 right-0 h-64 bg-gradient-to-b from-neutral-950 to-transparent z-0 pointer-events-none" />
+
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Integrated Ubicación & Cómo Llegar Compact Block */}
         <div className="bg-neutral-950 text-white rounded-3xl p-6 sm:p-8 md:p-10 mb-14 shadow-2xl border border-neutral-800">

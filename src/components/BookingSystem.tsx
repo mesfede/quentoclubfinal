@@ -397,21 +397,21 @@ export default function BookingSystem() {
                       setSelectedCourt(court);
                       setSelectedTime('');
                     }}
-                    className={`w-full max-w-[130px] sm:max-w-[145px] md:max-w-[155px] lg:max-w-[170px] aspect-square rounded-full flex flex-col items-center justify-center p-2 sm:p-2.5 md:p-3 border text-center transition-all cursor-pointer shadow-xl relative ${
+                    className={`w-full py-3.5 sm:py-4 px-2 rounded-2xl border text-center transition-all cursor-pointer shadow-sm relative min-h-[96px] sm:min-h-[114px] flex flex-col items-center justify-center ${
                       isSelected
-                        ? 'bg-neutral-950/95 border-2 border-red-500 shadow-red-950/90 scale-105 ring-4 ring-red-500/30'
-                        : 'bg-[#cbd5e1]/95 hover:bg-white border-white/60 hover:scale-102'
+                        ? 'bg-[#d21a23] text-white border-red-400/60 shadow-xl shadow-red-950/70 scale-[1.04]'
+                        : 'bg-[#cbd5e1]/90 hover:bg-white border-white/40 text-neutral-900 shadow-sm hover:scale-[1.02]'
                     }`}
                   >
                     {/* Top Label: CANCHA */}
-                    <span className={`text-[8px] sm:text-[9.5px] font-extrabold uppercase tracking-normal leading-none ${isSelected ? 'text-neutral-300' : 'text-neutral-700'}`}>
+                    <span className={`text-[10px] sm:text-xs font-black uppercase tracking-wider leading-none ${isSelected ? 'text-red-100' : 'text-neutral-700'}`}>
                       Cancha
                     </span>
 
                     {/* Prominent Large Circle enclosing the court number */}
-                    <div className={`my-1 w-11 h-11 sm:w-13 sm:h-13 md:w-16 md:h-16 lg:w-18 lg:h-18 rounded-full border-2 sm:border-[3px] flex items-center justify-center font-display font-black text-xl sm:text-2xl md:text-3xl lg:text-4xl transition-all shadow-md ${
+                    <div className={`my-2 w-11 h-11 sm:w-13 sm:h-13 md:w-14 md:h-14 rounded-full border-2 flex items-center justify-center font-display font-black text-2xl sm:text-3xl transition-all shadow-md ${
                       isSelected
-                        ? 'bg-[#d21a23] border-white text-white shadow-red-900/80 scale-105'
+                        ? 'bg-white border-white text-[#d21a23]'
                         : 'bg-neutral-950 border-neutral-800 text-white'
                     }`}>
                       {courtNum}
@@ -419,7 +419,7 @@ export default function BookingSystem() {
 
                     {/* Bottom info */}
                     <div className="flex flex-col items-center leading-none">
-                      <span className="text-[9px] sm:text-[10px] font-black text-[#d21a23] block">
+                      <span className={`text-[10px] sm:text-xs font-black block ${isSelected ? 'text-white' : 'text-[#d21a23]'}`}>
                         {availableCount} {availableCount === 1 ? 'libre' : 'libres'}
                       </span>
                     </div>

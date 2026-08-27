@@ -1,4 +1,5 @@
 import { Trophy, Users, Award, ExternalLink, Sparkles } from 'lucide-react';
+import fondoQuentoTorneos from '../assets/images/fondo_quento_torneos.jpg';
 
 export default function Actividades() {
   const cards = [
@@ -50,8 +51,22 @@ export default function Actividades() {
   ];
 
   return (
-    <section id="torneos" className="py-16 sm:py-24 bg-neutral-950 text-white scroll-mt-20 border-t border-neutral-900">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="torneos" className="relative overflow-hidden py-16 sm:py-24 bg-neutral-950 text-white scroll-mt-20 border-t border-neutral-900">
+      {/* Background Image: Grayscale, opacity, radial & linear gradients to fade borders and dissolve into black */}
+      <div 
+        className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat opacity-[0.16] pointer-events-none grayscale mix-blend-luminosity"
+        style={{ 
+          backgroundImage: `url(${fondoQuentoTorneos})`,
+          maskImage: 'radial-gradient(circle, black 35%, transparent 75%)',
+          WebkitMaskImage: 'radial-gradient(circle, black 35%, transparent 75%)'
+        }}
+      />
+      
+      {/* Top & Bottom edge soft linear gradients to blend perfectly with solid bg-neutral-950 */}
+      <div className="absolute top-0 left-0 right-0 h-24 bg-gradient-to-b from-neutral-950 to-transparent z-0 pointer-events-none" />
+      <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-neutral-950 to-transparent z-0 pointer-events-none" />
+
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Header */}
         <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">

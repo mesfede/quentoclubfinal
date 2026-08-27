@@ -88,7 +88,7 @@ export default function Hero({ onNavigateToBooking, onNavigateToExplore }: HeroP
       {/* Hero Content */}
       <div className="relative z-20 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white -mt-16 sm:mt-6 md:mt-10 flex flex-col items-center justify-center">
         {/* Dynamic Slide Container - Unmasked, sporty, fits in max 2 lines */}
-        <div className="min-h-[80px] sm:min-h-[130px] md:min-h-[150px] flex items-center justify-center w-full relative px-2">
+        <div className="min-h-[72px] sm:min-h-[130px] md:min-h-[150px] flex items-center justify-center w-full relative px-2">
           <AnimatePresence mode="wait">
             <motion.h1
               key={currentSlide}
@@ -96,7 +96,7 @@ export default function Hero({ onNavigateToBooking, onNavigateToExplore }: HeroP
               initial="enter"
               animate="center"
               exit="exit"
-              className="font-display font-black text-3xl sm:text-5xl md:text-6xl lg:text-7xl leading-[1.0] uppercase tracking-tight max-w-4xl text-white drop-shadow-[0_4px_24px_rgba(0,0,0,0.8)]"
+              className="font-display font-black text-[2.25rem] xs:text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[0.95] uppercase tracking-tight max-w-4xl text-white drop-shadow-[0_4px_24px_rgba(0,0,0,0.8)]"
             >
               {SLIDES[currentSlide]}
             </motion.h1>
@@ -104,7 +104,7 @@ export default function Hero({ onNavigateToBooking, onNavigateToExplore }: HeroP
         </div>
 
         {/* Fixed bajada / Subtitle debajo de cada título */}
-        <div className="max-w-2xl mt-3.5 sm:mt-4 px-2">
+        <div className="max-w-2xl mt-1.5 sm:mt-4 px-2">
           <p className="text-[13.5px] sm:text-base md:text-lg text-neutral-200 font-medium tracking-wide leading-relaxed drop-shadow">
             Disfrutá del mejor pádel en Quento Club. 6 canchas de primer nivel, disponibilidad inmediata y un ambiente inmejorable.
           </p>
