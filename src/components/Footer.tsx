@@ -24,8 +24,8 @@ export default function Footer({ onNavigateToBooking, onNavigateToSection }: Foo
         style={{ backgroundImage: `url(${quentoFooter})` }}
       />
       
-      {/* Degradé de transición de alta costura para fundir a negro con la sección superior */}
-      <div className="absolute top-0 left-0 right-0 h-64 bg-gradient-to-b from-neutral-950 to-transparent z-0 pointer-events-none" />
+      {/* Degradé de transición de alta costura para fundir a negro con la sección superior - Super suave y prolongado */}
+      <div className="absolute top-0 left-0 right-0 h-[380px] bg-gradient-to-b from-neutral-950 via-neutral-950/90 via-neutral-950/60 via-neutral-950/20 to-transparent z-0 pointer-events-none" />
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
